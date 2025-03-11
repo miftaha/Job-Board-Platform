@@ -1,3 +1,42 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Base styles */
+@layer base {
+  html {
+    font-family: 'Inter', sans-serif;
+    @apply text-body text-secondary;
+  }
+
+  h1 {
+    @apply text-heading-xl text-neutral;
+  }
+
+  h2 {
+    @apply text-heading-lg text-neutral;
+  }
+
+  h3 {
+    @apply text-subheading text-neutral;
+  }
+
+  body {
+    @apply bg-background;
+  }
+}
+
+/* Custom components */
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-dark transition-colors;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-white px-6 py-3 rounded-lg font-medium hover:bg-neutral transition-colors;
+  }
+
+  .card {
+    @apply bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow;
+  }
+}
