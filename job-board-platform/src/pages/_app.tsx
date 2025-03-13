@@ -1,11 +1,11 @@
-import '@fontsource/inter/400.css'
-import '@fontsource/inter/500.css'
-import '@fontsource/inter/700.css'
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import { AppProps } from 'next/app'
+import { AuthProvider } from '@/context/AuthContext'
+import '@/styles/globals.css'
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <AuthProvider>
+      <Component {...pageProps} />
+    </AuthProvider>
+  )
 }
-
-export default MyApp

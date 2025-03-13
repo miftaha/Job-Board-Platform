@@ -1,88 +1,20 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import { useState } from 'react'
-import { useRouter } from 'next/router'
-import Input from '../components/common/Input'
-import { register } from '../lib/api'
-import { RegisterRequest } from '../types'
+import Header from '@/components/layout/Header'
+import RegisterForm from '@/components/features/auth/RegisterForm'
+import Footer from '@/components/layout/Footer'
 
-const RegisterPage: NextPage = () => {
-  const [form, setForm] = useState<RegisterRequest>({
-    username: '',
-    email: '',
-    password: '',
-    role: 'user',
-  })
-  const [error, setError] = useState('')
-  const router = useRouter()
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    try {
-      const response = await register(form)
-      console.log('Register response:', response)
-      router.push('/login')
-    } catch (err: any) {
-      console.error('Register error:', err)
-      setError(err.message || 'Registration failed.')
-    }
-  }
-
+export default function RegisterPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <Head>
-        <title>Register - Job Board</title>
-      </Head>
-      <div className="card w-full max-w-md">
-        <h1 className="text-center mb-6">Register</h1>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        <form onSubmit={handleSubmit}>
-          <Input
-            label="Username"
-            value={form.username}
-            onChange={(e) => setForm({ ...form, username: e.target.value })}
-            required
-          />
-          <Input
-            label="Email"
-            type="email"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            required
-          />
-          <Input
-            label="Password"
-            type="password"
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-            required
-          />
-          <div className="mb-4">
-            <label className="block text-subheading mb-1">Role</label>
-            <select
-              value={form.role}
-              onChange={(e) =>
-                setForm({ ...form, role: e.target.value as 'user' | 'admin' })
-              }
-              className="w-full p-3 rounded-lg border border-gray-300 text-neutral"
-            >
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-          <button type="submit" className="btn-primary w-full">
-            Register
-          </button>
-        </form>
-        <p className="text-body-sm mt-4 text-center">
-          Already have an account?{' '}
-          <a href="/login" className="text-primary hover:underline">
-            Login
-          </a>
-        </p>
-      </div>
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <Header />
+      <main className="flex-1 flex items-center justify-center p-4 sm:p-6">
+        <div className="w-full max-w-md">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">
+            Create Your Account
+          </h1>
+          <RegisterForm />
+        </div>
+      </main>
+      <Footer />
     </div>
   )
 }
-
-export default RegisterPage

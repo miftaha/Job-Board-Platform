@@ -1,61 +1,85 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
-import { User, ApiResponse } from '@/types'
-import { login, getUser } from '@/utils/api'
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react'
 
 interface AuthContextType {
-  user: User | null
-  token: string | null
-  login: (credentials: { username: string; password: string }) => Promise<void>
+  accessToken: string | null
+  username: string | null
+  isAuthenticated: boolean
+  login: (token: string, username: string) => void
   logout: () => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem('accessToken')
-  )
+interface AuthProviderProps {
+  children: ReactNode
+}
+
+export function AuthProvider({ children }: AuthProviderProps) {
+  const [accessToken, setAccessToken] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('accessToken')
+    }
+    return null
+  })
+  const [username, setUsername] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('username')
+    }
+    return null
+  })
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return !!localStorage.getItem('accessToken')
+    }
+    return false
+  })
 
   useEffect(() => {
+    // Sync localStorage with state on mount
+    const token = localStorage.getItem('accessToken')
+    const user = localStorage.getItem('username')
     if (token) {
-      getUser().then((response) => {
-        if (response.data) setUser(response.data)
-      })
+      setAccessToken(token)
+      setUsername(user)
+      setIsAuthenticated(true)
     }
-  }, [token])
+  }, [])
 
-  const handleLogin = async (credentials: {
-    username: string
-    password: string
-  }) => {
-    const response = await login({
-      username: credentials.username,
-      password: credentials.password,
-    })
-    if (response.data) {
-      localStorage.setItem('accessToken', response.data.access)
-      setToken(response.data.access)
-      const userResponse = await getUser()
-      if (userResponse.data) setUser(userResponse.data)
-    }
+  const login = (token: string, username: string) => {
+    localStorage.setItem('accessToken', token)
+    localStorage.setItem('username', username)
+    setAccessToken(token)
+    setUsername(username)
+    setIsAuthenticated(true)
   }
 
   const logout = () => {
     localStorage.removeItem('accessToken')
-    setToken(null)
-    setUser(null)
+    localStorage.removeItem('username')
+    setAccessToken(null)
+    setUsername(null)
+    setIsAuthenticated(false)
   }
 
   return (
-    <AuthContext.Provider value={{ user, token, login: handleLogin, logout }}>
+    <AuthContext.Provider
+      value={{ accessToken, username, isAuthenticated, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   )
 }
 
-export const useAuth = () => {
+export function useAuth() {
   const context = useContext(AuthContext)
-  if (!context) throw new Error('useAuth must be used within an AuthProvider')
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider')
+  }
   return context
 }

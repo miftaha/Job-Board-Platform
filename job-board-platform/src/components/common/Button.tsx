@@ -1,26 +1,36 @@
 import { ReactNode } from 'react'
 
 interface ButtonProps {
-  children: ReactNode
-  variant?: 'primary' | 'secondary'
+  type?: 'button' | 'submit' | 'reset'
+  variant?: 'primary' | 'secondary' | 'outline'
   onClick?: () => void
+  children: ReactNode
+  className?: string
 }
 
-export default function Button({
-  children,
+const Button = ({
+  type = 'button',
   variant = 'primary',
   onClick,
-}: ButtonProps) {
-  const baseStyles =
-    'px-6 py-3 rounded-lg font-medium text-white transition-colors'
-  const variantStyles =
-    variant === 'primary'
-      ? 'bg-primary hover:bg-blue-800'
-      : 'bg-secondary hover:bg-green-700'
+  children,
+  className = '',
+}: ButtonProps) => {
+  const baseStyles = 'px-4 py-2 rounded-md font-medium'
+  const variantStyles = {
+    primary: 'bg-blue-600 text-white hover:bg-blue-700',
+    secondary: 'bg-gray-600 text-white hover:bg-gray-700',
+    outline: 'border border-gray-300 text-gray-700 hover:bg-gray-100',
+  }
 
   return (
-    <button className={`${baseStyles} ${variantStyles}`} onClick={onClick}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={`${baseStyles} ${variantStyles[variant]} ${className}`}
+    >
       {children}
     </button>
   )
 }
+
+export default Button

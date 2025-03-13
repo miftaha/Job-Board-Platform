@@ -1,39 +1,21 @@
-export interface LoginRequest {
-  username: string
-  password: string
-}
-
-export interface RegisterRequest {
+export interface RegisterData {
   username: string
   email: string
   password: string
-  role: 'user' | 'admin'
+  role: 'user' | 'admin' // Add role
 }
 
-export interface LoginResponse {
-  access: string
-  refresh: string
+export interface LoginData {
+  username: string
+  password: string
 }
 
 export interface RegisterResponse {
+  access: string
   username: string
-  email: string
-  role: 'user' | 'admin'
 }
 
-export interface User {
-  id: number | null
-  username: string
-  email?: string
-  role?: 'user' | 'admin'
-}
-
-export interface TokenRefreshRequest {
-  refresh: string
-}
-
-export interface TokenRefreshResponse {
-  refresh: string
+export interface AuthResponse {
   access: string
 }
 
@@ -42,18 +24,9 @@ export interface Job {
   title: string
   company: string
   location: string
-  category: string
-  experience_level: 'entry' | 'mid' | 'senior'
-  description: string
-  salary: string
-  posted_by: number
-}
-
-export interface Application {
-  id: number
-  job: number
-  applicant: number
-  resume: string
-  cover_letter: string
-  status: string
+  experience_level: string
+  category?: string
+  description?: string
+  salary?: string
+  posted_by?: number
 }
