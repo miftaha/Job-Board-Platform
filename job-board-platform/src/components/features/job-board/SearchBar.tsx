@@ -14,7 +14,7 @@ const SearchBar = () => {
         <input
           type="text"
           placeholder="Search jobs"
-          className="w-full pl-9 p-sm border border-accent rounded-btn bg-white text-text focus:outline-none focus:ring-1 focus:ring-primary shadow-soft"
+          className="w-full pl-9 px-4 py-2 p-sm border border-accent rounded-btn bg-white text-text focus:outline-none focus:ring-1 focus:ring-primary shadow-soft"
         />
       </div>
       <button

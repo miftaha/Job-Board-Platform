@@ -81,19 +81,6 @@ export default function Sidebar() {
                 Dashboard
               </Link>
             </li>
-            <li>
-              <Link
-                href="/jobs"
-                className={`block p-2 sm:p-3 rounded-md transition-colors text-sm sm:text-base ${
-                  isActive('/jobs')
-                    ? 'bg-blue-100 text-primary font-medium'
-                    : 'text-gray-700 hover:bg-blue-50'
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                All Jobs
-              </Link>
-            </li>
           </ul>
         </nav>
 
