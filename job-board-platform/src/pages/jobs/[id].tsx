@@ -78,7 +78,7 @@ export default function JobDetails({ job }: JobDetailsProps) {
       const timeoutId = setTimeout(() => {
         controller.abort()
         console.log('Request timed out after 30 seconds')
-      }, 70000) // Increased to 30 seconds
+      }, 70000)
 
       const response = await fetch(`/api/jobs/${job.id}/apply/`, {
         method: 'POST',
@@ -153,7 +153,6 @@ export default function JobDetails({ job }: JobDetailsProps) {
                   {job.experience_level}
                 </dd>
               </div>
-              {/* Other fields */}
             </dl>
           </section>
 

@@ -76,6 +76,7 @@ The application integrates with a backend API hosted at https://alx-project-nexu
 
 Here’s an overview of the project’s folder structure
 
+```
 job-nexus/
 ├── public/ # Static assets (e.g., images, favicon)
 ├── src/ # Source code
@@ -100,3 +101,4 @@ job-nexus/
 ├── package.json # Dependencies and scripts
 ├── tsconfig.json # TypeScript configuration
 └── README.md # Project documentation
+```
