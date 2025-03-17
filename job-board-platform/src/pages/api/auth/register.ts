@@ -1,23 +1,41 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import type { NextApiRequest, NextApiResponse } from 'next'
-import httpProxyMiddleware from 'http-proxy-middleware'
+import { createProxyMiddleware } from 'http-proxy-middleware'
 
 export const config = {
   api: {
-    externalResolver: true, // Required for proxy
-    bodyParser: false, // Pass raw body to proxy
+    externalResolver: true,
+    bodyParser: false,
   },
 }
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const proxy = httpProxyMiddleware.createProxyMiddleware({
+  const proxyMiddleware = createProxyMiddleware({
     target: 'https://alx-project-nexus-pvjg.onrender.com',
     changeOrigin: true,
     secure: true,
-    logLevel: 'debug',
     pathRewrite: {
-      '^/api/auth/register': '/api/auth/register/', // Ensure correct path
+      '^/api/auth/register': '/api/auth/register/',
+    },
+    on: {
+      proxyReq: (proxyReq, req, res) => {
+        console.log(
+          'Proxying request:',
+          req.method,
+          req.url,
+          'to',
+          proxyReq.path
+        )
+      },
+      error: (err, req, res) => {
+        console.error('Proxy error:', err)
+        ;(res as NextApiResponse)
+          .status(500)
+          .json({ detail: 'Proxy error occurred' })
+      },
     },
   })
 
-  return proxy(req, res)
+  return proxyMiddleware(req, res)
 }

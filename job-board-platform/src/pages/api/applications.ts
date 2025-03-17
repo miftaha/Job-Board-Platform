@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import type { NextApiRequest, NextApiResponse } from 'next'
-import httpProxyMiddleware from 'http-proxy-middleware'
+import { createProxyMiddleware } from 'http-proxy-middleware'
 import { API_BASE_URL } from '@/constants/api'
 
 export const config = {
   api: {
     externalResolver: true,
-    bodyParser: false, // For multipart/form-data
+    bodyParser: false,
   },
 }
 
@@ -17,27 +19,30 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   console.log('Proxy received method:', req.method)
   console.log('Proxy received headers:', req.headers)
 
-  const proxy = httpProxyMiddleware.createProxyMiddleware({
+  const proxyMiddleware = createProxyMiddleware({
     target: API_BASE_URL,
     changeOrigin: true,
     secure: true,
-    logLevel: 'debug',
     pathRewrite: {
       '^/api/applications': '/applications/',
     },
-    onProxyReq: (proxyReq, req, res) => {
-      Object.keys(req.headers).forEach((key) => {
-        if (req.headers[key]) {
-          proxyReq.setHeader(key, req.headers[key]!)
-        }
-      })
-      console.log('Proxy forwarding headers:', proxyReq.getHeaders())
-    },
-    onError: (err, req, res) => {
-      console.error('Proxy error:', err)
-      res.status(500).json({ error: 'Proxy error occurred' })
+    on: {
+      proxyReq: (proxyReq, req, res) => {
+        Object.keys(req.headers).forEach((key) => {
+          if (req.headers[key]) {
+            proxyReq.setHeader(key, req.headers[key]!)
+          }
+        })
+        console.log('Proxy forwarding headers:', proxyReq.getHeaders())
+      },
+      error: (err, req, res) => {
+        console.error('Proxy error:', err)
+        ;(res as NextApiResponse)
+          .status(500)
+          .json({ error: 'Proxy error occurred' })
+      },
     },
   })
 
-  return proxy(req, res)
+  return proxyMiddleware(req, res)
 }

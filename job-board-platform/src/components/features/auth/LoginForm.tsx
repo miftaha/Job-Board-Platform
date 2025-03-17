@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/router'
 import Input from '@/components/common/Input'

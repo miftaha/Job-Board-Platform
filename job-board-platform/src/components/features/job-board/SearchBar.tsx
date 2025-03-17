@@ -1,7 +1,12 @@
 import { FormEvent } from 'react'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
-
-const SearchBar = () => {
+interface SearchBarProps {
+  search: string
+  onSearchChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void
+}
+const SearchBar = ({ search, onSearchChange }: SearchBarProps) => {
   const handleSearch = (e: FormEvent) => {
     e.preventDefault()
     console.log('Search triggered')
@@ -14,6 +19,8 @@ const SearchBar = () => {
         <input
           type="text"
           placeholder="Search jobs"
+          value={search}
+          onChange={onSearchChange}
           className="w-full pl-9 px-4 py-2 p-sm border border-accent rounded-btn bg-white text-text focus:outline-none focus:ring-1 focus:ring-primary shadow-soft"
         />
       </div>

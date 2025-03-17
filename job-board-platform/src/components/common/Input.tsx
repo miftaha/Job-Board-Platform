@@ -19,12 +19,15 @@ const Input: React.FC<InputProps> = ({ label, error, ...props }) => {
         </label>
       )}
       {inputType === 'textarea' ? (
-        <textarea {...props} className={className} />
+        <textarea
+          {...(props as React.TextareaHTMLAttributes<HTMLTextAreaElement>)}
+          className={className}
+        />
       ) : (
         <input
           {...props}
           className={className}
-          readOnly={props.value && !props.onChange}
+          readOnly={!!props.value && !props.onChange}
         /> // Explicitly mark as read-only
       )}
       {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
