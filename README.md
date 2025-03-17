@@ -2,19 +2,7 @@
 
 Welcome to **Job Nexus**, a web application designed to streamline job searching and application processes. Built with Next.js, this project provides an intuitive interface for users to browse jobs, view details, and apply for positions seamlessly.
 
-## Table of Contents
 
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
-- [API Integration](#api-integration)
-- [Folder Structure](#folder-structure)
-- [Development](#development)
-- [Contributing](#contributing)
-- [License](#license)
-- [Known Issues](#known-issues)
-- [Acknowledgments](#acknowledgments)
 
 ## Features
 
@@ -32,8 +20,8 @@ Welcome to **Job Nexus**, a web application designed to streamline job searching
 
 ## Prerequisites
 
-- Node.js (v14.x or later)
-- npm (v6.x or later) or yarn
+
+- npm 
 - Git
 - Access to the backend API at `https://alx-project-nexus-pvjg.onrender.com/api`
 
